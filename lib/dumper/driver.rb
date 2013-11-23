@@ -69,7 +69,6 @@ module Dumper
           @destination_dumpfile = File.join(@destination_dumpfile, File.basename(@dumpfile))
         end
         @destination_dumpfile.chomp!(".gz")
-
         @dump_options = opts[:dump_options]
         @import_options = opts[:import_options]
         
@@ -131,7 +130,7 @@ module Dumper
 
           if @destination
             if remote_destination?
-              logger.debug "exporting..."
+              logger.debug "exporting to #{@destination_host}..."
               Util.with_lockfile(@destination_host, @destination_dumpfile) do
                 run "scp #{dumpfn} #{@destination_host}:#{@destination_dumpfile}#{@gzip ? '.gz' : ''}"
               end

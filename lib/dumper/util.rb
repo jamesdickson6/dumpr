@@ -7,7 +7,8 @@ module Dumper
       if h == "localhost"
         File.exists?(fn)
       else
-        system("ssh #{h} test -f '#{fn}'")
+        `ssh #{h} test -f '#{fn}' &> /dev/null`
+        $?.success?
       end
     end
 
@@ -15,7 +16,8 @@ module Dumper
       if h == "localhost"
         File.exists?(fn)
       else
-        system("ssh #{h} test -d '#{fn}'")
+        `ssh #{h} test -d '#{fn}' &> /dev/null`
+        $?.success?
       end
     end
 
@@ -25,7 +27,7 @@ module Dumper
       if h == "localhost"
         system(cmd)
       else
-        system("ssh #{h} #{cmd}")
+        system("ssh #{h} '#{cmd}'")
       end
     end
 
