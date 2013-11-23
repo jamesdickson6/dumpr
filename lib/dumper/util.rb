@@ -35,11 +35,11 @@ module Dumper
     def self.cat_file(h, fn)
       cmd = "cat #{fn}"
       if h == "localhost"
-        `#{cmd}`
+        `#{cmd}`.strip
       else
-        `ssh #{h} #{cmd}`
+        `ssh #{h} #{cmd}`.strip
       end
-    end
+    end        
 
     def self.remove_file(h, fn)
       cmd = "rm #{fn}"
@@ -47,6 +47,16 @@ module Dumper
         system(cmd)
       else
         system("ssh #{h} #{cmd}")
+      end
+    end
+
+    # return the human readable size of a file like 10MB
+    def self.human_file_size(h, fn)
+      cmd = "du -h #{fn} | cut -f 1"
+      if h == "localhost"
+        `#{cmd}`.strip
+      else
+        `ssh #{h} #{cmd}`.strip
       end
     end
 

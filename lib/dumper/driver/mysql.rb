@@ -13,11 +13,11 @@ module Dumper
 
       def dump_cmd
         if @all_databases
-          "mysqldump -u #{user} --password=#{password} -h #{host} -P #{port} #{dump_options} --all-databases"
+          "mysqldump -u #{user} --password=#{password} -h #{host} -P #{port} --all-databases #{dump_options}"
         elsif @databases
-          "mysqldump -u #{user} --password=#{password} -h #{host} -P #{port} #{dump_options} --databases #{databases.join(' ')}"
+          "mysqldump -u #{user} --password=#{password} -h #{host} -P #{port} --databases #{databases.join(' ')} #{dump_options}"
         else
-          "mysqldump -u #{user} --password=#{password} -h #{host} -P #{port} #{dump_options} #{database} #{tables ? tables.join(' ') : ''}"
+          "mysqldump -u #{user} --password=#{password} -h #{host} -P #{port} #{database} #{tables ? tables.join(' ') : ''} #{dump_options}"
         end
       end
 

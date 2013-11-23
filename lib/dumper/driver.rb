@@ -139,6 +139,8 @@ module Dumper
           else
             run "#{dump_cmd} > #{dumpfn}"
           end
+          dumpsize = Util.human_file_size("localhost", dumpfn)
+          logger.info("generated #{dumpfn} (#{dumpsize})")
 
           if @destination
             if remote_destination?
