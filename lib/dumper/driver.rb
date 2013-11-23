@@ -155,13 +155,15 @@ module Dumper
       end
 
       def decompress
-        if File.exists?(@dumpfile)
-          logger.warn "skipping decompress because #{@dumpfile} already exists."
-        elsif !File.exists?(@dumpfile + ".gz")
-          raise "decompress failed. #{@dumpfile}.gz does not exist!"
+        if File.exists?(@dumpfile + ".gz")
+          if File.exists?(@dumpfile) && !@opts[:force]
+            logger.warn "skipping decompress because #{@dumpfile} already exists."
+          else
+            logger.debug "decompressing..."
+            run "gzip -d -f #{@dumpfile}.gz"
+          end
         else
-          logger.debug "decompressing..."
-          run "gzip -d #{@dumpfile}.gz"
+          logger.warn "decompress failed. #{@dumpfile}.gz does not exist!"
         end
       end
 
