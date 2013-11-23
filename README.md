@@ -40,16 +40,16 @@ The *dumper* command can be used to export and import database dumps.
 
 Generates a yourdb.sql.gz
 
-``sh
+```sh
   dumper --user user --password pw --db yourdb --dumpfile yourdb.sql --destination dbserver2:/data/dumps/
-``
+```
 
 *Importing*
 
 Then, over on dbserver2, import your dump file
-``sh
+```sh
   dumper -i --user user --password pw --dumpfile /data/dumps/yourdb.sql
-``
+```
 
 ## Ruby API
 
@@ -58,24 +58,24 @@ You can write your own scripts that use a *Dumper::Driver*
 ### Exporting
 
 Export database to yourdb.sql.gz
-``ruby
+```ruby
  Dumper::Mysql.export( 
     :user => 'backupuser', :pass => 'dbpass',
     :db => 'yourdb', 
     :destination => 'server2:/data/dumps/yourdb.sql'
  )
-``
+```
 
 ### Importing
 
 Over on server2, import that file.
-``ruby
+```rb
  Dumper::Mysql.import( 
     :user => 'importuser', :pass => 'pass',
     :db => 'yourdb', 
     :dumpfile => '/data/dumps/yourdb.sql'
 )
-``
+```
 
 ### Standard Dumper::Driver options
 
