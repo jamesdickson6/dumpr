@@ -47,22 +47,26 @@ module Dumper
         @password = (opts[:password]  || options[:pass]) or raise BadConfig.new ":pass => <db password> is required"
 
         # dump all_databases or specific database(s)
-        if (opts[:all_databases])
-          @all_databases = true
-          @database = nil
-          @databases = nil
-          @tables = nil
-        else
-          @database = (opts[:database] || opts[:db]) or raise BadConfig.new ":database => <db schema name> is required"
-          @databases = [opts[:databases]].flatten.uniq.compact # not used/supported yet
+        @all_databases = nil
+        @database = nil
+        @databases = nil
+        @tables = nil
+        if (opts[:database] || opts[:db])
+          @database = (opts[:database] || opts[:db])
           @tables = [opts[:table], opts[:tables]].flatten.uniq.compact
+        elsif opts[:databases]
+          @databases = [opts[:databases]].flatten.uniq.compact # not used/supported yet
+        elsif opts[:all_databases]
+          @all_databases = true
+        else
+          raise BadConfig.new ":database => <db schema name> is required"
         end
         
         # dump settings
         @gzip = opts[:gzip].nil? ? true : opts[:gzip]
         @gzip_options = opts[:gzip_options] || "-9"
         @dumpdir = opts[:dumpdir] || "./"
-        @dumpfile = (opts[:dumpfile] || opts[:filename]) || (@database + "_" + Time.now.to_i.to_s + ".sql")
+        @dumpfile = (opts[:dumpfile] || opts[:filename]) or raise BadConfig.new ":dumpfile => <file.sql> is required"
         @dumpfile = @dumpfile[0].chr == "/" ? @dumpfile : File.join(@dumpdir, @dumpfile)
         @dumpfile.chomp!(".gz")
         # (optional) :destination is where dumps are exported to, and can be a remote host:path
