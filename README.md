@@ -10,18 +10,18 @@ Executables installed:
 * dumper
 
 TODO:
-* Easily support dump all databases
 * Dumper::Driver::Postgres ?
 * automate importing after an export (socket communication exporter/importer, or just some dumb lockfile checking / polling)
 * security: stop logging passwords
 * daemonize 
+* SSH parameters
 
 ### Dependencies
 * [Ruby &#8805; 1.8.7](http://www.ruby-lang.org/en/downloads/)
 
 
-'All SSH access is assumed to be automated with .ssh/config entries'
-TODO: ssh parameters for Dumper
+**SSH access is assumed to be automated with .ssh/config entries**
+
 
 ### Installation
 ```sh
