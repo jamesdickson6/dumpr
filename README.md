@@ -27,7 +27,7 @@ TODO:
 ```sh
   git clone https://github.com/sixjameses/dumper.git
   cd dumper
-  gem install dumper0.1.gem
+  gem install dumper-0.1.gem
 ```
 ### Usage
 
