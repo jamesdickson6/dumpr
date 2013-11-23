@@ -12,7 +12,11 @@ module Dumper
       end
 
       def dump_cmd
-        "mysqldump -u #{user} --password=#{password} -h #{host} -P #{port} #{dump_options} #{database} #{tables.join(' ')}"
+        if @all_databases
+          "mysqldump -u #{user} --password=#{password} -h #{host} -P #{port} #{dump_options} --all-databases"
+        else
+          "mysqldump -u #{user} --password=#{password} -h #{host} -P #{port} #{dump_options} #{database} #{tables.join(' ')}"
+        end
       end
 
       def import_cmd

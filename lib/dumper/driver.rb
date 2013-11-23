@@ -45,10 +45,18 @@ module Dumper
         @port = opts[:port]
         @user = opts[:user] or raise BadConfig.new ":user => <db user> is required"
         @password = (opts[:password]  || options[:pass]) or raise BadConfig.new ":pass => <db password> is required"
-        # only allow dumping a single database at a time right now
-        @database = (opts[:database] || opts[:db]) or raise BadConfig.new ":database => <db schema name> is required"
-        @databases = [opts[:databases]].flatten.uniq.compact # not used/supported yet
-        @tables = [opts[:table], opts[:tables]].flatten.uniq.compact # you can dump specific tables
+
+        # dump all_databases or specific database(s)
+        if (opts[:all_databases])
+          @all_databases = true
+          @database = nil
+          @databases = nil
+          @tables = nil
+        else
+          @database = (opts[:database] || opts[:db]) or raise BadConfig.new ":database => <db schema name> is required"
+          @databases = [opts[:databases]].flatten.uniq.compact # not used/supported yet
+          @tables = [opts[:table], opts[:tables]].flatten.uniq.compact
+        end
         
         # dump settings
         @gzip = opts[:gzip].nil? ? true : opts[:gzip]

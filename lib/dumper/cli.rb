@@ -37,8 +37,21 @@ ENDSTR
           options[:import] = val
         end
 
-        opts.on("--db DATABASE", "--database DATABASE", "Database to include in dump") do |val|
+        opts.on("--all-databases", "dump/import ALL databases") do |val|
+          options[:all_databases] = val
+        end
+        
+        opts.on("--db DATABASE", "--database DATABASE", "Database to dump/import") do |val|
           options[:database] = val
+        end
+
+        # TODO: Add support to Driver for this
+        opts.on("--databases [x,y,z]", Array, "dump/import multiple databases") do |val|
+          options[:databases] = val
+        end
+
+        opts.on("--tables [t1,t2,t3]", Array, "dump certain tables, to be used on conjuction with a single --database") do |val|
+          options[:tables] = val
         end
 
         opts.on("-u USER", "--user USER", "Database user") do |val|
@@ -56,16 +69,7 @@ ENDSTR
         opts.on("-P PORT", "--port PORT", "Database port") do |val|
           options[:host] = val
         end
-                        
-        # TODO: Add support to Driver for this
-        opts.on("--databases [x,y,z]", Array, "List of databases to include in dump") do |val|
-          options[:databases] = val
-        end
-
-        opts.on("--tables [t1,t2,t3]", Array, "dump certain tables, to be used on conjuction with a single --database") do |val|
-          options[:tables] = val
-        end
-        
+                                
         opts.on("--dumpfile [DUMPFILE]", "Name of dump file.  If relative, dumpdir") do |val|
           options[:dumpfile] = val
         end
