@@ -32,35 +32,31 @@ ENDSTR
         opts.on("-t", "--type [TYPE]", "Database type.  (mysql is the default) ") do |val|
           options[:driver] = val
         end
-        
-        opts.on("--db yourdb", "--database yourdb", "Database to include in dump") do |val|
+
+        opts.on("-i", "--import", "Import dump file.  Default behavior is to dump and export to --destination") do |val|
+          options[:import] = val
+        end
+
+        opts.on("--db DATABASE", "--database DATABASE", "Database to include in dump") do |val|
           options[:database] = val
         end
 
-        opts.on("-u user", "--user user", "Database user") do |val|
+        opts.on("-u USER", "--user USER", "Database user") do |val|
           options[:user] = val
         end
 
-        opts.on("-p pass", "--password pass", "--password=pass", "Database password") do |val|
+        opts.on("-p PASS", "--password PASS", "--password=pass", "Database password") do |val|
           options[:password] = val
         end
         
-        opts.on("-h host", "--host host", "Database host") do |val|
+        opts.on("-h HOST", "--host HOST", "Database host") do |val|
           options[:host] = val
         end
 
-        opts.on("-h port", "--port port", "Database port") do |val|
+        opts.on("-P PORT", "--port PORT", "Database port") do |val|
           options[:host] = val
         end
-        
-        opts.on("--db yourdb", "--database yourdb", "Database to include in dump") do |val|
-          options[:database] = val
-        end
-        
-        opts.on("-i", "--import", "Import dump file.  Default behavior is to dump (export)") do |val|
-          options[:import] = val
-        end
-        
+                        
         # TODO: Add support to Driver for this
         opts.on("--databases [x,y,z]", Array, "List of databases to include in dump") do |val|
           options[:databases] = val
@@ -70,11 +66,11 @@ ENDSTR
           options[:tables] = val
         end
         
-        opts.on("--dumpfile [dumpfile]", "Name of dump file.  If relative, dumpdir") do |val|
+        opts.on("--dumpfile [DUMPFILE]", "Name of dump file.  If relative, dumpdir") do |val|
           options[:dumpfile] = val
         end
         
-        opts.on("--destination [destination]", "Destination for dump. Can be a relative, as well as remote path in the format host:path") do |val|
+        opts.on("--destination [DESTINATION]", "Destination for dump. Can be a relative, as well as remote path in the format host:path") do |val|
           options[:destination] = val
         end
 
