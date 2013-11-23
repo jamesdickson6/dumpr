@@ -57,7 +57,7 @@ You can write your own scripts that use a *Dumper::Driver*
 
 ### Exporting
 
-Export database to yourdb.sql.gz
+Export database to yourdb.sql.gz and transfers it to server2
 ```ruby
  Dumper::Mysql.export( 
     :user => 'backupuser', :pass => 'dbpass',
