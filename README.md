@@ -7,12 +7,11 @@ Features:
 * automates import
 
 Executables installed:
-* dumper-import
-* dumper-export
+* dumper
 
 TODO:
 * Easily support dump all databases
-* Dumper::Postgres ?
+* Dumper::Driver::Postgres ?
 * automate importing after an export (socket communication exporter/importer, or just some dumb lockfile checking / polling)
 * security: stop logging passwords
 * daemonize 
