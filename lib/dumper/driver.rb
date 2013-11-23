@@ -29,7 +29,7 @@ module Dumper
 
     # abstract interface for all drivers
     class Base
-      attr_reader :options
+      attr_reader :opts
       attr_reader :host, :port, :user, :password, :database, :tables
       attr_reader :gzip, :gzip_options, :dumpdir, :dumpfile, :dump_options, :import_options
       attr_reader :destination, :destination_host, :destination_dumpfile
@@ -44,7 +44,7 @@ module Dumper
         @host = opts[:host] || "localhost"
         @port = opts[:port]
         @user = opts[:user] or raise BadConfig.new ":user => <db user> is required"
-        @password = (opts[:password]  || options[:pass]) or raise BadConfig.new ":pass => <db password> is required"
+        @password = (opts[:password]  || opts[:pass]) or raise BadConfig.new ":pass => <db password> is required"
 
         # dump all_databases or specific database(s)
         @all_databases = nil
