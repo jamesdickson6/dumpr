@@ -59,7 +59,7 @@ You can write your own scripts that use a *Dumper::Driver*
 
 Generate yourdb.sql.gz and transfer it to server2
 ```ruby
- Dumper::Mysql.export( 
+ Dumper::Driver::Mysql.export( 
     :user => 'backupuser', :pass => 'dbpass',
     :db => 'yourdb', 
     :destination => 'server2:/data/dumps/yourdb.sql'
@@ -70,7 +70,7 @@ Generate yourdb.sql.gz and transfer it to server2
 
 Then, over on dbserver2, import your dump file
 ```rb
- Dumper::Mysql.import( 
+ Dumper::Driver::Mysql.import( 
     :user => 'importuser', :pass => 'pass',
     :db => 'yourdb', 
     :dumpfile => '/data/dumps/yourdb.sql'
