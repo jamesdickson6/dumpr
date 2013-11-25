@@ -7,7 +7,7 @@
 # packet delimiter is not removed from packet suffix
 # 
 # Silly Example that simply passes through the data: 
-# ChunkPipe.open(STDOUT, STDIN, 1000, "\n") {|lines| lines.join }
+# ChunkPipe.open(STDIN, STDOUT, 1000, "\n") {|lines| lines.join }
 #
 module ChunkPipe
 
