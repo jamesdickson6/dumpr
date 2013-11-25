@@ -185,10 +185,11 @@ module Dumper
         Util.with_lockfile("localhost", @dumpfile) do
           decompress if @gzip
 
-          logger.info "importing..."
           if !File.exists?(@dumpfile)
             raise "#{@dumpfile} does not exist! Did you export it?"
           else
+            dumpsize = Util.human_file_size("localhost", @dumpfile)
+            logger.info("importing #{@dumpfile} (#{dumpsize})")
             run import_cmd
           end
           
