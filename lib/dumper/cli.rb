@@ -1,9 +1,11 @@
 require 'dumper'
 require 'optparse'
 require 'ostruct'
+# command line functions for bin/dumper
 module Dumper
   class CLI
     PROG_NAME = File.basename($0)
+
 
     def self.execute
       # default options
@@ -70,11 +72,11 @@ ENDSTR
           options[:host] = val
         end
                                 
-        opts.on("--dumpfile [DUMPFILE]", "Name of dump file.  If relative, dumpdir") do |val|
+        opts.on("--dumpfile [DUMPFILE]", "Filename of dump to create/import") do |val|
           options[:dumpfile] = val
         end
         
-        opts.on("--destination [DESTINATION]", "Destination for dump. Can be a relative, as well as remote path in the format host:path") do |val|
+        opts.on("--destination [DESTINATION]", "Destination for dumpfile. This can be a remote host:path.") do |val|
           options[:destination] = val
         end
 
