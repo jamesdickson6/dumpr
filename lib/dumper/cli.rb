@@ -69,7 +69,7 @@ ENDSTR
         end
 
         opts.on("-P PORT", "--port PORT", "Database port") do |val|
-          options[:host] = val
+          options[:port] = val
         end
 
         opts.on("--dumpfile [DUMPFILE]", "Filename of dump to create/import") do |val|
