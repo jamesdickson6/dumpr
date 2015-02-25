@@ -212,9 +212,7 @@ module Dumper
         if $?.success?
           logger.info "finished (took #{took_sec}s)"
         else
-          outmsg = outmsg || ''
-          outmsg = (output.first(40) + '...') if (output.length > 40)
-          logger.error "failed (took #{took_sec}s) status: #{$?.exitstatus}, out: #{outmsg}"
+          logger.error "failed (took #{took_sec}s) status: #{$?.exitstatus}"
           raise CommandFailure.new("Aborting because the following command failed: #{scrub_cmd cmd}")
         end
       end
