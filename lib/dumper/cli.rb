@@ -14,9 +14,9 @@ module Dumper
       options[:driver] = :mysql
       options[:gzip] = true
 
-      
+
       # parse ARGV options
-      OptionParser.new do |opts|
+      op = OptionParser.new do |opts|
 
         opts.banner = <<-ENDSTR
 Usage: #{PROG_NAME} [options]
@@ -42,7 +42,7 @@ ENDSTR
         opts.on("--all-databases", "dump/import ALL databases") do |val|
           options[:all_databases] = val
         end
-        
+
         opts.on("--db DATABASE", "--database DATABASE", "Database to dump/import") do |val|
           options[:database] = val
         end
@@ -63,7 +63,7 @@ ENDSTR
         opts.on("-p PASS", "--password PASS", "--password=pass", "Database password") do |val|
           options[:password] = val
         end
-        
+
         opts.on("-h HOST", "--host HOST", "Database host") do |val|
           options[:host] = val
         end
@@ -71,11 +71,11 @@ ENDSTR
         opts.on("-P PORT", "--port PORT", "Database port") do |val|
           options[:host] = val
         end
-                                
+
         opts.on("--dumpfile [DUMPFILE]", "Filename of dump to create/import") do |val|
           options[:dumpfile] = val
         end
-        
+
         opts.on("--destination [DESTINATION]", "Destination for dumpfile. This can be a remote host:path.") do |val|
           options[:destination] = val
         end
@@ -114,7 +114,14 @@ ENDSTR
           exit
         end
 
-      end.parse!
+      end
+
+      begin
+        op.parse!
+      rescue OptionParser::MissingArgument => e
+        puts "invalid arguments.  try #{PROG_NAME} --help"
+        exit 1
+      end
 
 
       # do it
@@ -123,7 +130,7 @@ ENDSTR
       else
         Dumper.export(options[:driver], options)
       end
-      
+
     end
 
   end

@@ -11,11 +11,12 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/sixjameses/dumper"
   s.summary     = "Dump and load databases."
   s.description = "Provides an easy way to dump, transfer and import databases."
-  s.files         = `git ls-files`.split("\n")
+  s.files         = `git ls-files`.split("\n").reject {|fn| fn =~ /\.gem$/ }
   #s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   s.extra_rdoc_files = ["README.md"]
+  s.licenses = ['MIT']
 
   #s.add_dependency('highline')
 end

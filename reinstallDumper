@@ -1,0 +1,4 @@
+#!/bin/bash
+gem uninstall -x dumper
+gem build dumper.gemspec
+gem install dumper-0.1.gem --no-rdoc --no-ri
