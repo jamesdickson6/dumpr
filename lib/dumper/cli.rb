@@ -125,11 +125,27 @@ ENDSTR
 
 
       # do it
-      if options[:import]
-        Dumper.import(options[:driver], options)
-      else
-        Dumper.export(options[:driver], options)
+      begin
+        if options[:import]
+          Dumper.import(options[:driver], options)
+        else
+          Dumper.export(options[:driver], options)
+        end
+      rescue Dumper::BadConfig => e
+        puts "bad arguments: #{e.message}\n. See --help"
+        exit 1
+      rescue Dumper::DumpFileExists => e
+        puts "#{e.message}\nIt looks like this dump exists already. You should move it, or use --force to trash it"
+        exit 1
+      rescue Dumper::BusyDumping => e
+        puts "#{e.message}\n See --help"
+        exit 1
+      rescue Dumper::CommandFailure => e
+        puts e.message
+        exit 1
       end
+
+      exit 0
 
     end
 

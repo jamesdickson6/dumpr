@@ -6,12 +6,15 @@ module Dumper
   # error raised when there is a bad configuration
   class BadConfig < RuntimeError; end
 
+  # error raised when a dump filename already exists
+  class DumpFileExists < RuntimeError; end
+
   # error raised when there is a dump operation in progress
-  class BusyDumping < Exception; end
+  class BusyDumping < RuntimeError; end
 
   # error raised when there is a command failure
   class CommandFailure < RuntimeError; end
-    
+
   def dump(driver, opts)
     driver = Driver.find(driver).new(opts)
     driver.dump()

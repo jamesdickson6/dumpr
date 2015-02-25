@@ -39,7 +39,7 @@ module Dumper
       else
         `ssh #{h} #{cmd}`.strip
       end
-    end        
+    end
 
     def self.remove_file(h, fn)
       cmd = "rm #{fn}"
@@ -69,7 +69,7 @@ module Dumper
       end
     end
 
-    def self.with_lockfile(h, fn, msg=nil)
+    def self.with_lockfile(h, fn, remove_dead_locks=false)
       fn = fn.chomp('.dumper.lock') + '.dumper.lock'
       mylock = nil
       if file_exists?(h, fn)
@@ -77,18 +77,24 @@ module Dumper
         mylock = Process.pid == pid
         if mylock
           # my own lock.. proceed
-        elsif # process_running?(h, pid)
-          raise BusyDumping.new "Lockfile #{fn} exists for another process #{pid}! If this was a previous dump that failed, you might need to remove this file before re-trying..."
+        elsif process_running?(h, pid)
+          raise BusyDumping.new "Lockfile '#{fn}' exists for another process (#{pid})!"
+        else
+          if remove_dead_locks
+            puts "Removing lockfile '#{fn}' for dead process (#{pid})"
+            remove_file(h, fn)
+          else
+            raise BusyDumping.new "Lockfile '#{fn}' exists for dead process (#{pid}) ! You may want to investigate the reason why, or use --force"
+          end
         end
       end
       begin
         touch_file(h, fn, Process.pid)
         yield
-        remove_file(h, fn) # maybe belongs in ensure..
       rescue => e
         raise e
       ensure
-
+        remove_file(h, fn)
       end
     end
 

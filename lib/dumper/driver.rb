@@ -61,7 +61,7 @@ module Dumper
         else
           raise BadConfig.new ":database => <db schema name> is required"
         end
-        
+
         # dump settings
         @gzip = opts[:gzip].nil? ? true : opts[:gzip]
         @gzip_options = opts[:gzip_options] || "-9"
@@ -83,7 +83,7 @@ module Dumper
         @destination_dumpfile.chomp!(".gz")
         @dump_options = opts[:dump_options]
         @import_options = opts[:import_options]
-        
+
         # set / update logger
         if opts[:logger]
           @logger = opts[:logger]
@@ -116,7 +116,7 @@ module Dumper
       def dump
         logger.debug("begin dump")
         dumpfn = @dumpfile + (@gzip ? ".gz" : "")
-        Util.with_lockfile("localhost", dumpfn) do
+        Util.with_lockfile("localhost", dumpfn, @opts[:force]) do
 
           logger.debug "preparing dump..."
           if !File.exists?(File.dirname(dumpfn))
@@ -126,10 +126,12 @@ module Dumper
           # avoid overwriting dump files..
           if File.exists?(dumpfn)
             if @opts[:force]
-              logger.warn " #{dumpfn} exists, moving it to #{dumpfn}.1"
-              run "rm -f #{dumpfn}.1; mv #{dumpfn} #{dumpfn}.1"
+              logger.warn "#{dumpfn} exists, moving it to #{dumpfn}.1"
+              #run "rm -f #{dumpfn}.1;"
+              run "mv #{dumpfn} #{dumpfn}.1"
             else
-              raise BusyDumping.new "#{dumpfn} already exists! Please move it or remove it"
+              logger.warn "#{dumpfn} already exists!"
+              raise DumpFileExists.new "#{dumpfn} already exists!"
             end
           end
 
@@ -145,14 +147,14 @@ module Dumper
           if @destination
             if remote_destination?
               logger.debug "exporting to #{@destination_host}..."
-              Util.with_lockfile(@destination_host, @destination_dumpfile) do
+              Util.with_lockfile(@destination_host, @destination_dumpfile, @opts[:force]) do
                 run "scp #{dumpfn} #{@destination_host}:#{@destination_dumpfile}#{@gzip ? '.gz' : ''}"
               end
             elsif @destination_dumpfile && @destination_dumpfile+(@gzip ? '.gz' : '') != dumpfn
               logger.debug "exporting..."
               destdir = File.dirname(@destination_dumpfile)
               run "mkdir -p #{destdir}" if !Util.dir_exists?("localhost", destdir)
-              Util.with_lockfile("localhost", @destination_dumpfile) do
+              Util.with_lockfile("localhost", @destination_dumpfile, @opts[:force]) do
                 run "mv #{dumpfn} #{@destination_dumpfile}#{@gzip ? '.gz' : ''}"
               end
             end
@@ -162,7 +164,7 @@ module Dumper
         logger.debug("end dump")
       end
 
-      # IMPORTING 
+      # IMPORTING
 
       def import_cmd
         raise BadConfig.new "#{self.class} has not defined import_cmd!"
@@ -182,28 +184,39 @@ module Dumper
       end
 
       def import
-        Util.with_lockfile("localhost", @dumpfile) do
+        Util.with_lockfile("localhost", @dumpfile, @opts[:force]) do
           decompress if @gzip
 
           if !File.exists?(@dumpfile)
-            raise "#{@dumpfile} does not exist! Did you export it?"
+            raise "Cannot import #{@dumpfile} because it does not exist!"
           else
             dumpsize = Util.human_file_size("localhost", @dumpfile)
             logger.info("importing #{@dumpfile} (#{dumpsize})")
             run import_cmd
           end
-          
+
         end # with_lockfile
       end
 
       protected
 
+      def scrub_cmd(cmd)
+        cmd.gsub(/password=[^\s]+/, 'password=xxxxxx')
+      end
+
       def run(cmd)
         start_time = Time.now
-        logger.info "running command: #{cmd}"
-        `#{cmd}`
-        raise "Aborting because the following command failed!: #{cmd}" unless $?.success?
-        logger.info "finished (took #{(Time.now - start_time).round()}s)"
+        logger.info "running command: #{scrub_cmd cmd}"
+        stdout = `#{cmd}`
+        took_sec = (Time.now - start_time).round()
+        if $?.success?
+          logger.info "finished (took #{took_sec}s)"
+        else
+          outmsg = outmsg || ''
+          outmsg = (output.first(40) + '...') if (output.length > 40)
+          logger.error "failed (took #{took_sec}s) status: #{$?.exitstatus}, out: #{outmsg}"
+          raise CommandFailure.new("Aborting because the following command failed: #{scrub_cmd cmd}")
+        end
       end
 
     end
