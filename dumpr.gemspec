@@ -8,9 +8,9 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["James Dickson"]
   s.email       = ["jdickson@bcap.com"]
-  s.homepage    = "http://github.com/sixjameses/dumpr"
-  s.summary     = "Dump and load databases."
-  s.description = "Dumpr provides an easy way to dump and import databases."
+  s.homepage    = "http://github.com/jamesdickson6/dumpr"
+  s.summary     = "Dump and import databases."
+  s.description = "Dumpr provides an easy way to dump and import databases. Supported databases include MySQL and Postgres."
   s.files       = `git ls-files -z`.split("\x0")
   s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.test_files  = s.files.grep(%r{^(test|spec|features)/})
