@@ -32,14 +32,14 @@ The *dumpr* command can be used to export and import database dumps.
 Generate yourdb.sql.gz and transfer it to server2
 
 ```sh
-  dumpr --user user --password pw --db yourdb --dumpfile yourdb.sql --destination dbserver2:/data/dumps/
+  dumpr --user user --password pw --db yourdb --file yourdb.sql --destination dbserver2:/data/dumps/
 ```
 
 *Importing*
 
 Then, over on dbserver2, import your dump file
 ```sh
-  dumpr -i --user user --password pw --dumpfile /data/dumps/yourdb.sql
+  dumpr -i --user user --password pw --file /data/dumps/yourdb.sql
 ```
 
 ## Ruby API
@@ -64,7 +64,7 @@ Then, over on dbserver2, import your dump file
  Dumpr::Driver::Mysql.import( 
     :user => 'importuser', :pass => 'pass',
     :db => 'yourdb', 
-    :dumpfile => '/data/dumps/yourdb.sql'
+    :file => '/data/dumps/yourdb.sql'
 )
 ```
 

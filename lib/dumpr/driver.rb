@@ -66,7 +66,7 @@ module Dumpr
         @gzip = opts[:gzip].nil? ? true : opts[:gzip]
         @gzip_options = opts[:gzip_options] || "-9"
         @dumpdir = opts[:dumpdir] || "./"
-        @dumpfile = (opts[:dumpfile] || opts[:filename]) or raise BadConfig.new ":dumpfile => <file.sql> is required"
+        @dumpfile = (opts[:file] || opts[:dumpfile] || opts[:filename]) or raise BadConfig.new ":dumpfile => <file.sql> is required"
         @dumpfile = @dumpfile[0].chr == "/" ? @dumpfile : File.join(@dumpdir, @dumpfile)
         @dumpfile.chomp!(".gz")
         # (optional) :destination is where dumps are exported to, and can be a remote host:path

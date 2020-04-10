@@ -22,11 +22,11 @@ Usage: #{PROG_NAME} [options]
 
 Exporting:
 
-  #{PROG_NAME} --user youruser --password yourpass --db yourdb --dumpfile yourdb.sql --destination server2:/data/backups
+  #{PROG_NAME} --user root --password yourpass --db yourdb --file yourdb.sql --destination server2:/data/backups
 
 Importing:
 
-  #{PROG_NAME} -i --user youruser --password yourpass --db yourdb --dumpfile /data/backups/yourdb.sql
+  #{PROG_NAME} -i --user root --password yourpass --db yourdb --file /data/backups/yourdb.sql
 
 Don't forget to set up your .ssh/config so you won't be prompted for ssh passwords for file transfers
 
@@ -75,11 +75,15 @@ ENDSTR
           options[:port] = val
         end
 
-        opts.on("--dumpfile [DUMPFILE]", "Filename of dump to create/import") do |val|
+        opts.on("--file FILENAME", "Filename of dump to create/import") do |val|
           options[:dumpfile] = val
         end
 
-        opts.on("--destination [DESTINATION]", "Destination for dumpfile. This can be a remote host:path.") do |val|
+        opts.on("--dumpfile FILENAME", "Alias for --file") do |val|
+          options[:dumpfile] = val
+        end
+
+        opts.on("--destination DESTINATION", "Destination for dumpfile. This can be a remote host:path.") do |val|
           options[:destination] = val
         end
 
