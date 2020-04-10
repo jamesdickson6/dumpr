@@ -7,7 +7,7 @@ module Dumper
     PROG_NAME = File.basename($0)
 
 
-    def self.execute
+    def self.execute(args)
       # default options
       options = {}
       options[:dumpdir] = Dir.pwd
@@ -15,19 +15,22 @@ module Dumper
       options[:gzip] = true
 
 
-      # parse ARGV options
       op = OptionParser.new do |opts|
 
         opts.banner = <<-ENDSTR
 Usage: #{PROG_NAME} [options]
-EXPORTING
+
+Exporting:
+
   #{PROG_NAME} --user youruser --password yourpass --db yourdb --dumpfile yourdb.sql --destination server2:/data/backups
-IMPORTING
-  #{PROG_NAME} --user youruser --password yourpass --db yourdb --dumpfile /data/backups/yourdb.sql
 
-DON'T FORGET TO SET UP YOUR .ssh/config so you won't be prompted for ssh passwords for file transfers
+Importing:
 
-OPTIONS:
+  #{PROG_NAME} -i --user youruser --password yourpass --db yourdb --dumpfile /data/backups/yourdb.sql
+
+Don't forget to set up your .ssh/config so you won't be prompted for ssh passwords for file transfers
+
+Options:
 
 ENDSTR
 
@@ -104,12 +107,12 @@ ENDSTR
           options[:force] = val
         end
 
-        opts.on_tail("-h", "--help", "Show this message") do
+        opts.on("-h", "--help", "Show this message") do
          puts opts
          exit
         end
 
-        opts.on_tail("-v", "--version", "Show version") do
+        opts.on("-v", "--version", "Show version") do
           puts Dumper::Version
           exit
         end
@@ -117,7 +120,7 @@ ENDSTR
       end
 
       begin
-        op.parse!
+        op.parse!(args)
       rescue OptionParser::MissingArgument => e
         puts "invalid arguments.  try #{PROG_NAME} --help"
         exit 1
@@ -132,7 +135,7 @@ ENDSTR
           Dumper.export(options[:driver], options)
         end
       rescue Dumper::BadConfig => e
-        puts "bad arguments: #{e.message}\n. See --help"
+        puts "bad arguments: #{e.message}.\n See --help"
         exit 1
       rescue Dumper::DumpFileExists => e
         puts "#{e.message}\nIt looks like this dump exists already. You should move it, or use --force to trash it"

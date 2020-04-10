@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'dumper/cli'
-Dumper::CLI.execute
+Dumper::CLI.execute(ARGV)

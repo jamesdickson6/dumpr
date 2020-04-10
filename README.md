@@ -9,27 +9,19 @@ Features:
 Executables installed:
 * dumper
 
-TODO:
-* Dumper::Driver::Postgres ?
-* automate importing after an export (socket communication exporter/importer, or just some dumb lockfile checking / polling)
-* security: stop logging passwords
-* daemonize 
-* SSH parameters
-
 ### Dependencies
 * [Ruby &#8805; 1.8.7](http://www.ruby-lang.org/en/downloads/)
 
-
 **SSH access is assumed to be automated with .ssh/config entries**
 
-
 ### Installation
+
 ```sh
-  git clone https://github.com/sixjameses/dumper.git
-  cd dumper
-  gem install dumper-0.1.gem
+  gem install dumper
 ```
 ### Usage
+
+Use the `dumper` executable to export and import your databases.
 
 #### dumper
 
@@ -68,7 +60,7 @@ Generate yourdb.sql.gz and transfer it to server2
 ### Importing
 
 Then, over on dbserver2, import your dump file
-```rb
+```ruby
  Dumper::Driver::Mysql.import( 
     :user => 'importuser', :pass => 'pass',
     :db => 'yourdb', 
@@ -83,4 +75,12 @@ See *Dumper::Driver*
   
 ## CHANGELOG
 
-* Version 0.1
+* Version 1.0
+
+## TODO
+
+* Dumper::Driver::Postgres
+* automate importing after an export (socket communication exporter/importer, or just some dumb lockfile checking / polling)
+* security: stop logging passwords
+* daemonize 
+* SSH parameters
