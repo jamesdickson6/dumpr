@@ -39,7 +39,7 @@ Generate yourdb.sql.gz and transfer it to server2
 
 Then, over on dbserver2, import your dump file
 ```sh
-  dumpr -i --user user --password pw --file /data/dumps/yourdb.sql
+  dumpr-import --user user --password pw --file /data/dumps/yourdb.sql
 ```
 
 ## Ruby API
