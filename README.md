@@ -10,7 +10,7 @@ Executables installed:
 * dumpr
 
 ### Dependencies
-* [Ruby &#8805; 1.8.7](http://www.ruby-lang.org/en/downloads/)
+* [Ruby &#8805; 2.2.1](http://www.ruby-lang.org/en/downloads/)
 
 **SSH access is assumed to be automated with .ssh/config entries**
 
@@ -75,12 +75,21 @@ See *Dumpr::Driver*
   
 ## CHANGELOG
 
-* Version 1.0
+### Version 1.3
+* Split binary, new command `dumpr-import` to replace `dumpr --import`
+* Postgres support (beta)
+
+### Version 1.2
+* Changed gem and binary command from `dumper` to `dumpr`
+
+### Version 1.1
+* Tweaks
+
+### Version 1.0
+* Initial release
 
 ## TODO
-
-* Dumpr::Driver::Postgres
-* automate importing after an export (socket communication exporter/importer, or just some dumb lockfile checking / polling)
+* automate importing after an export (socket communication exporter/importer, or just lockfile checking / polling)
 * security: stop logging passwords
-* daemonize 
+* daemonize, maybe?
 * SSH parameters
