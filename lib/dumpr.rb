@@ -4,6 +4,9 @@ require 'dumpr/driver'
 module Dumpr
 
   # error raised when there is a bad configuration
+  class MissingDriver < RuntimeError; end
+
+  # error raised when there is a bad configuration
   class BadConfig < RuntimeError; end
 
   # error raised when a dump filename already exists

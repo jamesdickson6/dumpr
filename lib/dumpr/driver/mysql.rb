@@ -11,6 +11,14 @@ module Dumpr
         @dump_options || "--single-transaction --quick"
       end
 
+      def dump_installed?
+        system("which mysqldump") == true
+      end
+
+      def import_installed?
+        system("which mysql") == true
+      end
+
       def dump_cmd
         if @all_databases
           "mysqldump -u #{user} --password=#{password} -h #{host} -P #{port} --all-databases #{dump_options}"

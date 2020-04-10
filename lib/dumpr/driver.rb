@@ -100,8 +100,16 @@ module Dumpr
         @logger
       end
 
+      def dump_installed?
+        raise BadConfig.new "#{self.class} has not defined dump_installed?"
+      end
+
+      def import_installed?
+        raise BadConfig.new "#{self.class} has not defined import_installed?"
+      end
+
       def dump_cmd
-        raise BadConfig.new "#{self.class} has not defined dump_cmd!"
+        raise BadConfig.new "#{self.class} has not defined dump_cmd"
       end
 
       # DUMPING + EXPORTING
@@ -115,6 +123,9 @@ module Dumpr
       # if @destination is defined, it then moves the dump to the @destination, which can be a remote host:path
       def dump
         logger.debug("begin dump")
+        if dump_installed? != true
+          raise MissingDriver.new "#{self.class} does not appear to be installed.\nCould not find command `#{dump_cmd.to_s.split.first}`"
+        end
         dumpfn = @dumpfile + (@gzip ? ".gz" : "")
         Util.with_lockfile("localhost", dumpfn, @opts[:force]) do
 
@@ -184,6 +195,9 @@ module Dumpr
       end
 
       def import
+        if import_installed? != true
+          raise MissingDriver.new "#{self.class} does not appear to be installed.\nCould not find command `#{import_cmd.to_s.split.first}`"
+        end
         Util.with_lockfile("localhost", @dumpfile, @opts[:force]) do
           decompress if @gzip
 

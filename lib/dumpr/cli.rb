@@ -134,6 +134,9 @@ ENDSTR
         else
           Dumpr.export(options[:driver], options)
         end
+      rescue Dumpr::MissingDriver => e
+        puts "#{e.message}."
+        exit 1
       rescue Dumpr::BadConfig => e
         puts "bad arguments: #{e.message}.\n See --help"
         exit 1
