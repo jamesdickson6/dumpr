@@ -1,13 +1,13 @@
 # abstract driver that does everything
-require 'dumper'
-require 'dumper/util'
+require 'dumpr'
+require 'dumpr/util'
 require 'logger'
 
-module Dumper
+module Dumpr
   module Driver
 
     def find(driver)
-      driver_file = "dumper/driver/#{driver}"
+      driver_file = "dumpr/driver/#{driver}"
       require(driver_file)
       const_ar = driver.to_s.split("/").reject{|i| i==""}.collect {|i| i.capitalize.gsub(/_(.)/) {$1.upcase} }
       klass_str = const_ar.join('::')
@@ -19,7 +19,7 @@ module Dumper
         raise e
         raise BadConfig, "could not find `#{klass_str}' in `#{driver_file}'"
       end
-      raise BadConfig, "#{klass.name} is not a type of Dumper::Driver!" unless klass < Dumper::Driver::Base
+      raise BadConfig, "#{klass.name} is not a type of Dumpr::Driver!" unless klass < Dumpr::Driver::Base
       return klass
     rescue LoadError
       raise BadConfig, "failed to load '#{driver_file}' !'"

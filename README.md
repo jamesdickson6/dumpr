@@ -1,4 +1,4 @@
-## Dumper
+## Dumpr
 A Ruby Gem that's objective is to make dumping and importing databases easy.
 
 Features:
@@ -7,7 +7,7 @@ Features:
 * automates import
 
 Executables installed:
-* dumper
+* dumpr
 
 ### Dependencies
 * [Ruby &#8805; 1.8.7](http://www.ruby-lang.org/en/downloads/)
@@ -17,40 +17,40 @@ Executables installed:
 ### Installation
 
 ```sh
-  gem install dumper
+  gem install dumpr
 ```
 ### Usage
 
-Use the `dumper` executable to export and import your databases.
+Use the `dumpr` executable to export and import your databases.
 
-#### dumper
+#### dumpr
 
-The *dumper* command can be used to export and import database dumps.
+The *dumpr* command can be used to export and import database dumps.
 
 *Exporting*
 
 Generate yourdb.sql.gz and transfer it to server2
 
 ```sh
-  dumper --user user --password pw --db yourdb --dumpfile yourdb.sql --destination dbserver2:/data/dumps/
+  dumpr --user user --password pw --db yourdb --dumpfile yourdb.sql --destination dbserver2:/data/dumps/
 ```
 
 *Importing*
 
 Then, over on dbserver2, import your dump file
 ```sh
-  dumper -i --user user --password pw --dumpfile /data/dumps/yourdb.sql
+  dumpr -i --user user --password pw --dumpfile /data/dumps/yourdb.sql
 ```
 
 ## Ruby API
 
-You can write your own scripts that use a *Dumper::Driver*
+You can write your own scripts that use a *Dumpr::Driver*
 
 ### Exporting
 
 Generate yourdb.sql.gz and transfer it to server2
 ```ruby
- Dumper::Driver::Mysql.export( 
+ Dumpr::Driver::Mysql.export( 
     :user => 'backupuser', :pass => 'dbpass',
     :db => 'yourdb', 
     :destination => 'server2:/data/dumps/yourdb.sql'
@@ -61,16 +61,16 @@ Generate yourdb.sql.gz and transfer it to server2
 
 Then, over on dbserver2, import your dump file
 ```ruby
- Dumper::Driver::Mysql.import( 
+ Dumpr::Driver::Mysql.import( 
     :user => 'importuser', :pass => 'pass',
     :db => 'yourdb', 
     :dumpfile => '/data/dumps/yourdb.sql'
 )
 ```
 
-### Standard Dumper::Driver options
+### Standard Dumpr::Driver options
 
-See *Dumper::Driver*
+See *Dumpr::Driver*
   
   
 ## CHANGELOG
@@ -79,7 +79,7 @@ See *Dumper::Driver*
 
 ## TODO
 
-* Dumper::Driver::Postgres
+* Dumpr::Driver::Postgres
 * automate importing after an export (socket communication exporter/importer, or just some dumb lockfile checking / polling)
 * security: stop logging passwords
 * daemonize 

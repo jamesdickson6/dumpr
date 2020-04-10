@@ -1,6 +1,6 @@
 #TODO: Refactor this
 # Utility methods for touching/reading local and remote files
-module Dumper
+module Dumpr
   module Util
 
     def self.file_exists?(h, fn)
@@ -70,7 +70,7 @@ module Dumper
     end
 
     def self.with_lockfile(h, fn, remove_dead_locks=false)
-      fn = fn.chomp('.dumper.lock') + '.dumper.lock'
+      fn = fn.chomp('.dumpr.lock') + '.dumpr.lock'
       mylock = nil
       if file_exists?(h, fn)
         pid = cat_file(h, fn)

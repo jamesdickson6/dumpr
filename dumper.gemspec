@@ -1,22 +1,22 @@
 $:.push File.expand_path("../lib", __FILE__)
-require "dumper/version"
+require "dumpr/version"
 
 Gem::Specification.new do |s|
 
-  s.name        = "dumper"
-  s.version     = Dumper::Version.to_s
+  s.name        = "dumpr"
+  s.version     = Dumpr::Version.to_s
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["James Dickson"]
   s.email       = ["jdickson@bcap.com"]
-  s.homepage    = "http://github.com/sixjameses/dumper"
+  s.homepage    = "http://github.com/sixjameses/dumpr"
   s.summary     = "Dump and load databases."
-  s.description = "Dumper provides an easy way to dump and import databases."
+  s.description = "Dumpr provides an easy way to dump and import databases."
   s.files       = `git ls-files -z`.split("\x0")
   s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.test_files  = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ["lib"]
   s.extra_rdoc_files = ["README.md"]
   s.licenses    = ['MIT']
-  s.required_ruby_version = '>= 1.8.7'
+  s.required_ruby_version = '>= 2.2.1'
   #s.add_dependency('highline')
 end

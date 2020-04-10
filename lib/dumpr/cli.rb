@@ -1,8 +1,8 @@
-require 'dumper'
+require 'dumpr'
 require 'optparse'
 require 'ostruct'
-# command line functions for bin/dumper
-module Dumper
+# command line functions for bin/dumpr
+module Dumpr
   class CLI
     PROG_NAME = File.basename($0)
 
@@ -113,7 +113,7 @@ ENDSTR
         end
 
         opts.on("-v", "--version", "Show version") do
-          puts Dumper::Version
+          puts Dumpr::Version
           exit
         end
 
@@ -130,20 +130,20 @@ ENDSTR
       # do it
       begin
         if options[:import]
-          Dumper.import(options[:driver], options)
+          Dumpr.import(options[:driver], options)
         else
-          Dumper.export(options[:driver], options)
+          Dumpr.export(options[:driver], options)
         end
-      rescue Dumper::BadConfig => e
+      rescue Dumpr::BadConfig => e
         puts "bad arguments: #{e.message}.\n See --help"
         exit 1
-      rescue Dumper::DumpFileExists => e
+      rescue Dumpr::DumpFileExists => e
         puts "#{e.message}\nIt looks like this dump exists already. You should move it, or use --force to trash it"
         exit 1
-      rescue Dumper::BusyDumping => e
+      rescue Dumpr::BusyDumping => e
         puts "#{e.message}\n See --help"
         exit 1
-      rescue Dumper::CommandFailure => e
+      rescue Dumpr::CommandFailure => e
         puts e.message
         exit 1
       end

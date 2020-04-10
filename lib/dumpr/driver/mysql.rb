@@ -1,5 +1,5 @@
-require 'dumper/driver'
-module Dumper
+require 'dumpr/driver'
+module Dumpr
   module Driver
     class Mysql < Base
 

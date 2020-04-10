@@ -1,7 +1,7 @@
-require 'dumper/version'
-require 'dumper/driver'
+require 'dumpr/version'
+require 'dumpr/driver'
 
-module Dumper
+module Dumpr
 
   # error raised when there is a bad configuration
   class BadConfig < RuntimeError; end
