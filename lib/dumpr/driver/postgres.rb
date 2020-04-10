@@ -25,8 +25,13 @@ module Dumpr
           raise BadConfig.new "#{self.class} does not support --all-databases"
         elsif @databases
           raise BadConfig.new "#{self.class} does not support multiple --databases"
-        elsif @database.nil?
-          #raise BadConfig.new "#{self.class} requires option --database"
+        elsif @database
+          # supported
+        else
+          raise BadConfig.new "#{self.class} requires option --database"
+        end
+        if @tables
+          raise BadConfig.new "#{self.class} does not support --tables"
         end
       end
 
@@ -41,7 +46,11 @@ module Dumpr
       end
 
       def import_cmd
-        "pg_restore -h #{host} -p #{port} -U #{user} --password #{password} --verbose --clean --no-owner --no-acl #{database} #{dumpfile}"
+        if @database
+          "pg_restore -h #{host} -p #{port} -U #{user} --password #{password} --verbose --clean --no-owner --no-acl -d #{database} #{dumpfile}"
+        else
+          "pg_restore -h #{host} -p #{port} -U #{user} --password #{password} --verbose --clean --no-owner --no-acl #{database} #{dumpfile}"
+        end
       end
 
     end

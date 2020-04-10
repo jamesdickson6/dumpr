@@ -19,6 +19,19 @@ module Dumpr
         system("which mysql") == true
       end
 
+      def configure(opts)
+        super(opts)
+        if @all_databases
+          # supported
+        elsif @databases
+          # supported
+        elsif @database
+          # supported
+        else
+          raise BadConfig.new "#{self.class} requires option --database or --databases or --all-databases"
+        end
+      end
+
       def dump_cmd
         if @all_databases
           "mysqldump -u #{user} --password=#{password} -h #{host} -P #{port} --all-databases #{dump_options}"

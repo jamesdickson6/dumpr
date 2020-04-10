@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'dumpr/cli'
-Dumpr::CLI.execute(["-i"] + ARGV)
+Dumpr::CLI.import(ARGV)
