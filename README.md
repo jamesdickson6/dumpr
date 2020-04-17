@@ -13,7 +13,7 @@ Executables installed:
 
 The current version is [dumpr 1.4](https://rubygems.org/gems/dumpr).
 
-Recent changes are documented in (History)[https://github.com/jamesdickson6/dumpr/blob/master/History.md].
+Recent changes are documented in [History](https://github.com/jamesdickson6/dumpr/blob/master/History.md).
 
 ### Dependencies
 * [Ruby &#8805; 2.2.1](http://www.ruby-lang.org/en/downloads/)
