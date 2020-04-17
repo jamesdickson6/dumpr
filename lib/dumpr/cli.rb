@@ -22,14 +22,22 @@ module Dumpr
 
 usage: #{PROG_NAME} [options] [file]
 
-       #{PROG_NAME} --user root --db test_database test_database_dump.sql.gz
+       #{PROG_NAME} --user test --db test_example test_example_dump.sql
 
-The [file] argument is required and can be passed as --file instead.
+Create a database dump file, exporting database(s) to a file.
 
-Generate a database dumpfile. 
-By default the file is compressed with gzip and give a .gz extension.
-Use --no-gzip to skip compression.
-Setup .ssh/config to avoid being prompted for ssh passwords during file transfers.
+The default database type is MySQL. Supports MySQL and Postgres.
+
+arguments:
+
+    [file] File is the filename of the database dump being created.
+           It may be relative, 'mydumpfile.sql' to write to your working directory.
+           It may be absolute, 'server:/path/to/dumpfile.sql'.
+           If server: is specified, ssh/scp is used to transfer data to the remote server.
+           You will want to setup .ssh/config to avoid being prompted for passwords.
+           The .gz file extension is assumed.
+           By default it will first look for a compressed version at [file].gz.
+           The --no-gzip option can be used to skip compression.
 
 options:
 
@@ -39,10 +47,6 @@ ENDSTR
           options[:driver] = val
         end
 
-        opts.on("--all-databases", "Dump ALL databases") do |val|
-          options[:all_databases] = val
-        end
-
         opts.on("--db DATABASE", "--database DATABASE", "Dump a single database") do |val|
           options[:database] = val
         end
@@ -50,6 +54,10 @@ ENDSTR
         # TODO: Add support to Driver for this
         opts.on("--databases x,y,z", Array, "Dump multiple databases") do |val|
           options[:databases] = val
+        end
+
+        opts.on("--all-databases", "Dump ALL databases") do |val|
+          options[:all_databases] = val
         end
 
         opts.on("--tables z,y,z", Array, "Dump certain tables, to be used on conjuction with a single --database") do |val|
@@ -72,23 +80,25 @@ ENDSTR
           options[:port] = val
         end
 
-        opts.on("--file FILENAME", "Filename of dump to create.") do |val|
+        opts.on("--file FILENAME", "Filename of dump to create, may passed in place of the [file] argument.") do |val|
           options[:dumpfile] = val
         end
 
-        opts.on("--dumpfile FILENAME", "Alias for --file") do |val|
-          options[:dumpfile] = val
-        end
+        # could get rid of all these and just rely on full filepath being passed.
 
-        opts.on("--destination DESTINATION", "Destination for dumpfile. This can be a remote host:path.") do |val|
-          options[:destination] = val
-        end
+        # opts.on("--dumpfile FILENAME", "Alias for --file") do |val|
+        #   options[:dumpfile] = val
+        # end
 
-        opts.on("--dumpdir DIRECTORY", "Default directory for dumpfiles. Default is working directory") do |val|
-          options[:dumpdir] = val
-        end
+        # opts.on("--destination DESTINATION", "Destination for dumpfile. This can be a remote host:path.") do |val|
+        #   options[:destination] = val
+        # end
 
-        opts.on("--dump-options=[DUMPOPTIONS]", "Extra options to be included in dump command") do |val|
+        # opts.on("--dumpdir DIRECTORY", "Default directory for dumpfiles. Default is working directory") do |val|
+        #   options[:dumpdir] = val
+        # end
+
+        opts.on("--dump-options=[OPTIONS]", "Extra options to be included in dump command") do |val|
           options[:dump_options] = val
         end
 
@@ -182,17 +192,30 @@ ENDSTR
         opts.banner = <<-ENDSTR
 #{PROG_NAME} #{Dumpr::Version}
 
-usage: #{PROG_NAME} [options] [file]
+usage: 
+    #{PROG_NAME} [options] [file]
 
-       #{PROG_NAME} --user root --db test_database test_database_dump.sql.gz
+    #{PROG_NAME} --user test --db test_example ./test_example_dump.sql
 
-Import a dumpfile.
-Setup .ssh/config to avoid being prompted for ssh passwords during file transfers.
+Import a database dump file, restoring data to the defined database(s).
 
-args:
+The default database type is MySQL. Supports MySQL and Postgres.
 
-      [file] is required. This is the filename to import.
-                          May be a remote location eg. server:/path/to/file
+WARNING: This command will overwrite your database information.
+         Be sure you specify the correct host and database name(s)
+         and the [file] that contains the data you want in it.
+
+arguments:
+
+    [file] File is the path of the database dump file being imported.
+           File may be relative, 'mydumpfile.sql.gz' to read from your working directory.
+           File may be absolute, 'server:/path/to/dumpfile.sql'.
+           If server: is specified, ssh/scp is used to transfer data from the remote server.
+           You will want to setup ssh configuration to avoid password prompts.
+           The .gz file extension is assumed.
+           By default it will first look for a compressed version at [file].gz.
+           The --no-gzip option can be used to skip compression.
+
 options:
 
 ENDSTR
@@ -201,18 +224,18 @@ ENDSTR
           options[:driver] = val
         end
 
-        opts.on("--all-databases", "Import ALL databases") do |val|
-          options[:all_databases] = val
-        end
-
         opts.on("--db DATABASE", "--database DATABASE", "Import to a single database") do |val|
           options[:database] = val
         end
 
         # TODO: add support to Driver for --databases and --tables
-        #      import probably does not need these/
+        #      import probably does not need this right now
         opts.on("--databases x,y,z", Array, "Import multiple databases") do |val|
           options[:databases] = val
+        end
+
+        opts.on("--all-databases", "Import ALL databases") do |val|
+          options[:all_databases] = val
         end
 
         # opts.on("--tables x,y,z", Array, "Import only certain tables, to be used on conjuction with a single --database") do |val|
@@ -239,19 +262,21 @@ ENDSTR
           options[:dumpfile] = val
         end
 
-        opts.on("--dumpfile FILENAME", "Alias for --file") do |val|
-          options[:dumpfile] = val
-        end
+        # could get rid of all these and just rely on full filepath being passed.
 
-        opts.on("--destination DESTINATION", "Destination for dumpfile. This can be a remote host:path.") do |val|
-          options[:destination] = val
-        end
+        # opts.on("--dumpfile FILENAME", "Alias for --file") do |val|
+        #   options[:dumpfile] = val
+        # end
 
-        opts.on("--dumpdir DIRECTORY", "Default directory for dumpfiles. Default is working directory") do |val|
-          options[:dumpdir] = val
-        end
+        # opts.on("--destination DESTINATION", "Destination for dump files. This can be a remote host:path.") do |val|
+        #   options[:destination] = val
+        # end
 
-        opts.on("--import-options=[IMPORTOPTIONS]", "Extra options to be included in dump command") do |val|
+        # opts.on("--dumpdir DIRECTORY", "Default directory for dump files. Default is working directory") do |val|
+        #   options[:dumpdir] = val
+        # end
+
+        opts.on("--import-options=[OPTIONS]", "Extra options to be included in import command") do |val|
           options[:import_options] = val.to_s
         end
 
@@ -259,20 +284,21 @@ ENDSTR
           options[:gzip] = false
         end
 
-        opts.on("--gzip-options=[GZIPOPTIONS]", "gzip compression options.  Default is -9 (slowest /max compression)") do |val|
-          options[:gzip_options] = val
-        end
+        # opts.on("--gzip-options=[GZIPOPTIONS]", "gzip compression options.  Default is -9 (slowest /max compression)") do |val|
+        #   options[:gzip_options] = val
+        # end
 
         opts.on("--log-file LOGFILE", "Log file.  Default is stdout.") do |val|
           options[:log_file] = val
         end
 
-        opts.on("--force", "Overwrite dumpfile if it exists already.") do |val|
+        opts.on("--force", "Overwrite dump file if it exists already.") do |val|
           options[:force] = val
         end
 
         opts.on("-h", "--help", "Show this message") do
          puts opts
+         print "\n"
          exit
         end
 
