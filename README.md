@@ -5,6 +5,7 @@ Features:
 * generates gzipped sql dump files for a specific database or specific tables.
 * automates transfer of dump files to remote hosts
 * automates import
+* support for MySQL and Postgres.
 
 Executables installed:
 * dumpr
@@ -48,23 +49,26 @@ You can write your own scripts that use a *Dumpr::Driver*
 
 ### Exporting
 
-Generate yourdb.sql.gz and transfer it to server2
+Generate yourdb.sql.gz and transfer it to another server.
+
 ```ruby
- Dumpr::Driver::Mysql.export( 
-    :user => 'backupuser', :pass => 'dbpass',
-    :db => 'yourdb', 
-    :destination => 'server2:/data/dumps/yourdb.sql'
+ Dumpr::Driver::Mysql.dump( 
+    :user => 'backupuser', 
+    :password => '12345',
+    :db => 'test_database', 
+    :destination => 'server2:/data/dumps/test_database.sql'
  )
 ```
 
 ### Importing
 
-Then, over on dbserver2, import your dump file
+Then, over on **dbserver2**, import your dump file.
 ```ruby
  Dumpr::Driver::Mysql.import( 
-    :user => 'importuser', :pass => 'pass',
-    :db => 'yourdb', 
-    :file => '/data/dumps/yourdb.sql'
+    :user => 'importuser', 
+    :password => '12345',
+    :db => 'test_database', 
+    :file => '/data/dumps/test_database.sql'
 )
 ```
 

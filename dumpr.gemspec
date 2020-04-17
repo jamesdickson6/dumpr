@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email       = ["jdickson@bcap.com"]
   s.homepage    = "http://github.com/jamesdickson6/dumpr"
   s.summary     = "Dump and import databases."
-  s.description = "Dumpr provides an easy way to dump and import databases. Supported databases include MySQL and Postgres."
+  s.description = "Dumpr provides an easy way to dump and import databases. Support for MySQL and Postgres databases."
   s.files       = `git ls-files -z`.split("\x0")
   s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.test_files  = s.files.grep(%r{^(test|spec|features)/})
