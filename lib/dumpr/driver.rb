@@ -66,7 +66,8 @@ module Dumpr
         @gzip = opts[:gzip].nil? ? true : opts[:gzip]
         @gzip_options = opts[:gzip_options] || "-9"
         @dumpdir = opts[:dumpdir] || Dir.pwd #"./"
-        @dumpfile = (opts[:file] || opts[:dumpfile] || opts[:filename]) or raise BadConfig.new "dumpfile is required"
+        @dumpfile = (opts[:file] || opts[:dumpfile] || opts[:filename]) or raise BadConfig.new "[file] is required"
+        @dumpfile = @dumpfile.to_s.dup # this is frozen?
         @dumpfile = @dumpfile[0].chr == "/" ? @dumpfile : File.join(@dumpdir, @dumpfile)
         @dumpfile.chomp!(".gz")
         # (optional) :destination is where dumps are exported to, and can be a remote host:path
