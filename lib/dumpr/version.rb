@@ -1,3 +1,3 @@
 module Dumpr
-  Version = "1.3".freeze
+  Version = "1.4".freeze
 end
