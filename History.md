@@ -1,6 +1,6 @@
 # HISTORY
 
-This is the changelog version history for the dumpr gem.
+This is the changelog version history for the [dumpr](https://rubygems.org/gems/dumpr) gem.
 
 ## dumpr 1.4
 
