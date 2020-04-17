@@ -9,6 +9,11 @@ Features:
 
 Executables installed:
 * dumpr
+* dumpr-import
+
+The current version is [dumpr 1.4](https://rubygems.org/gems/dumpr).
+
+Recent changes are documented in (History)[https://github.com/jamesdickson6/dumpr/blob/master/History.md].
 
 ### Dependencies
 * [Ruby &#8805; 2.2.1](http://www.ruby-lang.org/en/downloads/)
@@ -76,23 +81,9 @@ Then, over on **dbserver2**, import your dump file.
 
 See *Dumpr::Driver*
   
-  
-## CHANGELOG
-
-### Version 1.3
-* Split binary, new command `dumpr-import` to replace `dumpr --import`
-* Postgres support (beta)
-
-### Version 1.2
-* Changed gem and binary command from `dumper` to `dumpr`
-
-### Version 1.1
-* Tweaks
-
-### Version 1.0
-* Initial release
 
 ## TODO
+
 * automate importing after an export (socket communication exporter/importer, or just lockfile checking / polling)
 * security: stop logging passwords
 * daemonize, maybe?
