@@ -17,9 +17,9 @@ This is the changelog version history for the dumpr gem.
 * Added command `dumpr-import`.
 * Deprecated `dumpr -i` option, replaced by `dumpr-import`.
 
-## dumpr 1.0
+## dumpr 1.1
 
-* Better usage
+* Improved usage
 
 
 ## dumpr 1.0
