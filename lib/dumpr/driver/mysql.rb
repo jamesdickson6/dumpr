@@ -43,7 +43,16 @@ module Dumpr
       end
 
       def import_cmd
-        "mysql -u #{user} --password=#{password} -h #{host} -P #{port} #{database} < #{dumpfile}"
+        #"mysql -u #{user} --password=#{password} -h #{host} -P #{port} #{database} < #{dumpfile}"
+        cmd = ["mysql"]
+        cmd << "-u '#{user}'" unless user.to_s.empty?
+        cmd << "--password '#{password}'" unless password.to_s.empty?
+        cmd << "-h '#{host}'" unless host.to_s.empty?
+        cmd << "-P '#{port}'" unless port.to_s.empty?
+        cmd << "#{database}" unless database.empty?
+        cmd << "#{import_options}" unless import_options.to_s.empty?
+        cmd << " < #{dumpfile}"
+        cmd.join(" ")
       end
 
     end

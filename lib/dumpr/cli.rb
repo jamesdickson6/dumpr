@@ -25,7 +25,6 @@ usage: #{PROG_NAME} [options] [file]
        #{PROG_NAME} --user test --db test_example test_example_dump.sql
 
 Create a database dump file, exporting database(s) to a file.
-
 The default database type is MySQL. Supports MySQL and Postgres.
 
 arguments:
@@ -80,7 +79,7 @@ ENDSTR
           options[:port] = val
         end
 
-        opts.on("--file FILENAME", "Filename of dump to create, may passed in place of the [file] argument.") do |val|
+        opts.on("-f FILENAME", "--file FILENAME", "Filename of dump to create, may passed in place of the [file] argument.") do |val|
           options[:dumpfile] = val
         end
 
@@ -143,10 +142,8 @@ ENDSTR
       rescue => e
         case (e)
         when OptionParser::InvalidOption, OptionParser::AmbiguousOption, OptionParser::MissingArgument, OptionParser::InvalidArgument, OptionParser::NeedlessArgument
-          # todo: write to stderr instead
-          puts "invalid arguments. #{e.message}" # stderr plz
-          print "\n"
-          puts "Try -h for help with this command."
+          STDERR.puts "#{e.message}"
+          STDERR.puts  "Try -h for help with this command."
           exit 1
         else
           raise e
@@ -197,10 +194,8 @@ usage:
 
     #{PROG_NAME} --user test --db test_example ./test_example_dump.sql
 
-Import a database dump file, restoring data to the defined database(s).
-
+Import a database dump file, restoring data to the specified hosts and database(s).
 The default database type is MySQL. Supports MySQL and Postgres.
-
 WARNING: This command will overwrite your database information.
          Be sure you specify the correct host and database name(s)
          and the [file] that contains the data you want in it.
@@ -258,7 +253,7 @@ ENDSTR
           options[:port] = val
         end
 
-        opts.on("--file FILENAME", "Filename of dump to import") do |val|
+        opts.on("-f FILENAME", "--file FILENAME", "Filename of dump to create, may passed in place of the [file] argument.") do |val|
           options[:dumpfile] = val
         end
 
@@ -321,10 +316,8 @@ ENDSTR
       rescue => e
         case (e)
         when OptionParser::InvalidOption, OptionParser::AmbiguousOption, OptionParser::MissingArgument, OptionParser::InvalidArgument, OptionParser::NeedlessArgument
-          # todo: write to stderr instead
-          puts "invalid arguments. #{e.message}" # stderr plz
-          print "\n"
-          puts "Try -h for help with this command."
+          STDERR.puts "#{e.message}"
+          STDERR.puts  "Try -h for help with this command."
           exit 1
         else
           raise e
