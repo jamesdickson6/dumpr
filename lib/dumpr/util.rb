@@ -5,7 +5,7 @@ module Dumpr
 
     def self.file_exists?(h, fn)
       if h == "localhost"
-        File.exists?(fn)
+        File.exist?(fn)
       else
         `ssh #{h} test -f '#{fn}' &> /dev/null`
         $?.success?
@@ -14,7 +14,7 @@ module Dumpr
 
     def self.dir_exists?(h, fn)
       if h == "localhost"
-        File.exists?(fn)
+        File.exist?(fn)
       else
         `ssh #{h} test -d '#{fn}' &> /dev/null`
         $?.success?

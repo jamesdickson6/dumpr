@@ -131,12 +131,12 @@ module Dumpr
         Util.with_lockfile("localhost", dumpfn, @opts[:force]) do
 
           logger.debug "preparing dump..."
-          if !File.exists?(File.dirname(dumpfn))
+          if !File.exist?(File.dirname(dumpfn))
             run "mkdir -p #{File.dirname(dumpfn)}"
           end
 
           # avoid overwriting dump files..
-          if File.exists?(dumpfn)
+          if File.exist?(dumpfn)
             if @opts[:force]
               logger.warn "#{dumpfn} exists, moving it to #{dumpfn}.1"
               #run "rm -f #{dumpfn}.1;"
@@ -183,8 +183,8 @@ module Dumpr
       end
 
       def decompress
-        if File.exists?(@dumpfile + ".gz")
-          if File.exists?(@dumpfile) && !@opts[:force]
+        if File.exist?(@dumpfile + ".gz")
+          if File.exist?(@dumpfile) && !@opts[:force]
             logger.warn "skipping decompress because #{@dumpfile} already exists."
           else
             logger.debug "decompressing..."
@@ -202,7 +202,7 @@ module Dumpr
         Util.with_lockfile("localhost", @dumpfile, @opts[:force]) do
           decompress if @gzip
 
-          if !File.exists?(@dumpfile)
+          if !File.exist?(@dumpfile)
             raise "Cannot import #{@dumpfile} because it does not exist!"
           else
             dumpsize = Util.human_file_size("localhost", @dumpfile)
