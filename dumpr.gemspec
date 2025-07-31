@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Dumpr::Version.to_s
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["James Dickson"]
-  s.email       = ["jdickson@bcap.com"]
+  s.email       = ["james.dickson@hpe.com"]
   s.homepage    = "http://github.com/jamesdickson6/dumpr"
   s.summary     = "Dump and import databases."
   s.description = "Dumpr provides an easy way to dump and import databases. Support for MySQL and Postgres databases."
